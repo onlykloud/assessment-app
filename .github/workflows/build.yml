@@ -14,9 +14,15 @@ on:
       - 'prod'
 
 jobs:
-  build:
+  build-dev:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/devel'
+    environment: devel
     steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
       - uses: actions/checkout@v4
         name: checkout
       - uses: actions/setup-node@v4
@@ -41,3 +47,5 @@ jobs:
       - run: npm run build
         name: build
         working-directory: "codebase/rdicidr-0.1.0"
+      - name: deploy
+        run: az storage blob upload-batch --account-name devopsassessmentdevel -d '$web' -s "./codebase/rdicidr-0.1.0/build"
