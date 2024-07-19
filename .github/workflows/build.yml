@@ -1,0 +1,35 @@
+name: Build App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: checkout
+      - uses: actions/setup-node@v4
+        name: setup node
+        with:
+          node-version: '15.x'
+      - run: npm install
+        name: npm install
+        working-directory: "codebase/rdicidr-0.1.0"
+      - run: npm run lint
+        name: lint
+        working-directory: "codebase/rdicidr-0.1.0"
+      - run: npm install prettier
+        name: install prettier
+      - run: npm run prettier
+        continue-on-error: true
+        name: prettier
+        working-directory: "codebase/rdicidr-0.1.0"
+      - run: npm run test
+        name: test
+        working-directory: "codebase/rdicidr-0.1.0"
+      - run: npm run build
+        name: build
+        working-directory: "codebase/rdicidr-0.1.0"
