@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+      - 'devel'
+      - 'stage'
+      - 'prod'
+  pull_request:
+    branches:
+      - 'devel'
+      - 'stage'
+      - 'prod'
 
 jobs:
   build:
